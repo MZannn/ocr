@@ -12,6 +12,29 @@ class FormView extends StatelessWidget {
     TextEditingController namePersonController = TextEditingController();
     TextEditingController addressPersonController = TextEditingController();
     TextEditingController phoneNumberPersonController = TextEditingController();
+    List<String> personNameList = [
+      'John Doe',
+      'Alice Smith',
+      'Bob Johnson',
+      'Emily Brown',
+      'Michael Wilson',
+      'Sophia Davis',
+      'David Lee',
+      'Olivia Martinez',
+      'James Anderson',
+      'Ella Wilson',
+      'William Taylor',
+      'Emma Jones',
+      'Daniel Harris',
+      'Grace Miller',
+      'Matthew Clark',
+      'Ava Taylor',
+      'Joseph Garcia',
+      'Chloe Lopez',
+      'Andrew Hall',
+      'Sofia Hernandez',
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Data"),
@@ -74,11 +97,18 @@ class FormView extends StatelessWidget {
                     labelText: 'Nomor Telepon',
                   ),
                 ),
-                TextFormField(
-                  controller: namePersonController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama Orang yang Dituju',
-                  ),
+                DropdownButtonFormField(
+                  items: personNameList
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    namePersonController.text = value.toString();
+                  },
                 ),
                 TextFormField(
                   controller: addressPersonController,

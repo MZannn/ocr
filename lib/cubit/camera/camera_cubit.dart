@@ -33,11 +33,13 @@ class CameraCubit extends Cubit<CameraState> {
           final croppedInputImage = InputImage.fromFile(croppedFile);
           recognizedText = await textRecognizer.processImage(croppedInputImage);
           extractDataFromText(recognizedText);
-          log('nama 1 $name');
+          log('Nama: $name');
         } else {
           final file = File(pictureFile.path);
           final inputImage = InputImage.fromFile(file);
           recognizedText = await textRecognizer.processImage(inputImage);
+          extractDataFromText(recognizedText);
+          log('Nama: $name');
         }
         emit(TextRecognized(
           nik,
@@ -54,7 +56,7 @@ class CameraCubit extends Cubit<CameraState> {
 
   void extractDataFromText(RecognizedText recognizedText) {
     bool foundNIK = false;
-
+    bool foundName = false;
     try {
       outerloop:
       for (int i = 0; i < recognizedText.blocks.length; i++) {
@@ -66,7 +68,18 @@ class CameraCubit extends Cubit<CameraState> {
             break outerloop;
           } else if (!foundNIK &&
               isNIK(recognizedText.blocks[i].lines[j].text)) {
-            nik = data.replaceAll(' ', '').replaceAll(':', '');
+            nik = data
+                .replaceAll(' ', '')
+                .replaceAll(':', '')
+                .replaceAll('?', '7')
+                .replaceAll('l', '1')
+                .replaceAll('L', '1')
+                .replaceAll('I', '1')
+                .replaceAll('O', '0')
+                .replaceAll('B', '8')
+                .replaceAll('b', '6')
+                .replaceAll('D', '0')
+                .replaceAll('S', '5');
             foundNIK = true;
           }
         }

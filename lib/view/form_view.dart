@@ -10,9 +10,9 @@ class FormView extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController addressController = TextEditingController();
     TextEditingController phoneNumberController = TextEditingController();
-    TextEditingController namePersonController = TextEditingController();
     TextEditingController addressPersonController = TextEditingController();
     TextEditingController phoneNumberPersonController = TextEditingController();
+    String personName = '';
     List<String> personNameList = [
       'John Doe',
       'Alice Smith',
@@ -235,7 +235,7 @@ class FormView extends StatelessWidget {
                               )
                               .toList(),
                           onChanged: (value) {
-                            namePersonController.text = value.toString();
+                            personName = value!;
                           },
                           decoration: const InputDecoration(
                             filled: true,
@@ -318,7 +318,17 @@ class FormView extends StatelessWidget {
                         height: 16,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<CameraCubit>().sendToWhatsapp(
+                                identityNumberController.text,
+                                nameController.text,
+                                addressController.text,
+                                phoneNumberController.text,
+                                personName,
+                                addressPersonController.text,
+                                phoneNumberPersonController.text,
+                              );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           shape: RoundedRectangleBorder(

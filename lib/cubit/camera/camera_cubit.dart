@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
 part 'camera_state.dart';
@@ -16,6 +17,7 @@ class CameraCubit extends Cubit<CameraState> {
   CameraController? cameraController;
   RecognizedText recognizedText = RecognizedText(text: '', blocks: []);
   TextRecognizer textRecognizer = TextRecognizer();
+
   String nik = '';
   String name = '';
   String address = '';
@@ -105,6 +107,21 @@ class CameraCubit extends Cubit<CameraState> {
       }
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<void> sendToWhatsapp(
+      String identityNumber,
+      String name,
+      String address,
+      String phoneNumber,
+      String personName,
+      String personAddress,
+      String personPhoneNumber) async {
+    final Uri uri = Uri.parse(
+        "https://wa.me/+6281952951440?text=Halo%20Bapak/Ibu%20$personName%20ada%20tamu%20yang%20ingin%20berkunjung%20ke%20rumah%20Bapak/Ibu%20atas%20nama%20$name%20Apakah%20Bapak/Ibu%20berkenan%20menerima%20tamu%20ini");
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch ${uri.toString()}');
     }
   }
 

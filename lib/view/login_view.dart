@@ -191,18 +191,26 @@ class _LoginViewState extends State<LoginView> {
                       child: BlocListener<LoginCubit, LoginState>(
                         listener: (context, state) {
                           if (state is LoginLoading) {
-                            const AlertDialog(
-                              content: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                });
                           }
                           if (state is LoginFailed) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Login Failed"),
-                              ),
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Center(
+                                      child: Text("Email atau password salah"),
+                                    ),
+                                  );
+                                });
                           } else if (state is LoginSuccess) {
                             Navigator.pushReplacementNamed(
                                 context, '/navigation');

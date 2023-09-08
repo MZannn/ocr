@@ -8,6 +8,7 @@ class FormView extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController identityNumberController = TextEditingController();
     TextEditingController nameController = TextEditingController();
+    TextEditingController addressController = TextEditingController();
     TextEditingController phoneNumberController = TextEditingController();
     TextEditingController namePersonController = TextEditingController();
     TextEditingController addressPersonController = TextEditingController();
@@ -36,115 +37,312 @@ class FormView extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Data"),
-      ),
-      body: BlocBuilder<CameraCubit, CameraState>(
-        builder: (_, state) {
-          if (state is TextRecognized) {
-            identityNumberController.text = state.identityNumber;
-            nameController.text = state.name;
-          }
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+      body: Stack(
+        children: [
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: const DecorationImage(
+                image: AssetImage("assets/images/half_circle.png"),
+                fit: BoxFit.cover,
+              ),
             ),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    context.read<CameraCubit>().scanImage();
-                  },
-                  child: SizedBox(
-                    height: 200,
-                    width: 300,
-                    child: state is TextRecognized
-                        ? Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: FileImage(state.image!),
-                                fit: BoxFit.cover,
-                              ),
+          ),
+          SafeArea(
+            child: BlocBuilder<CameraCubit, CameraState>(
+              builder: (_, state) {
+                if (state is TextRecognized) {
+                  identityNumberController.text = state.identityNumber;
+                  nameController.text = state.name;
+                  addressController.text = state.address;
+                }
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const Text(
+                        "Form Pengunjung",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          context.read<CameraCubit>().scanImage();
+                        },
+                        borderRadius: BorderRadius.circular(8),
+                        child: SizedBox(
+                          height: state is TextRecognized ? 200 : 150,
+                          width: state is TextRecognized ? 300 : 250,
+                          child: state is TextRecognized
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: FileImage(state.image!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Center(
+                                    child: Text("Pick Image"),
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: identityNumberController,
+                        decoration: InputDecoration(
+                          labelText: 'NIK',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
                             ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade400,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Center(
-                              child: Text("Pick Image"),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
                             ),
                           ),
-                  ),
-                ),
-                TextFormField(
-                  controller: identityNumberController,
-                  decoration: const InputDecoration(
-                    labelText: 'NIK',
-                  ),
-                ),
-                TextFormField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama',
-                  ),
-                ),
-                TextFormField(
-                  controller: phoneNumberController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nomor Telepon',
-                  ),
-                ),
-                DropdownButtonFormField(
-                  items: personNameList
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    namePersonController.text = value.toString();
-                  },
-                ),
-                TextFormField(
-                  controller: addressPersonController,
-                  decoration: const InputDecoration(
-                    labelText: 'Alamat Orang yang Dituju',
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Nama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: addressController,
+                        decoration: InputDecoration(
+                          labelText: 'Alamat',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(
+                          labelText: 'Nomor Telepon',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButtonFormField(
+                          menuMaxHeight: 300,
+                          hint: const Text('Pilih Orang yang Ingin Dituju'),
+                          items: personNameList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            namePersonController.text = value.toString();
+                          },
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                          isDense: true,
+                          isExpanded: true,
+                          elevation: 0,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: addressPersonController,
+                        decoration: InputDecoration(
+                          labelText: 'Alamat Orang yang Dituju',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      TextFormField(
+                        controller: phoneNumberPersonController,
+                        decoration: InputDecoration(
+                          labelText: 'Nomor Telepon Orang yang Dituju',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
                   ),
-                ),
-                TextFormField(
-                  controller: phoneNumberPersonController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nomor Telepon Orang yang Dituju',
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  child: const Text(
-                    'Submit',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

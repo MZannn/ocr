@@ -18,6 +18,7 @@ class CameraCubit extends Cubit<CameraState> {
   TextRecognizer textRecognizer = TextRecognizer();
   String nik = '';
   String name = '';
+  String address = '';
 
   Future<void> scanImage() async {
     try {
@@ -26,14 +27,26 @@ class CameraCubit extends Cubit<CameraState> {
           await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (pictureFile != null) {
-        CroppedFile? croppedImage =
-            await ImageCropper().cropImage(sourcePath: pictureFile.path);
+        CroppedFile? croppedImage = await ImageCropper().cropImage(
+          sourcePath: pictureFile.path,
+          aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 2),
+        );
         if (croppedImage != null) {
+          emit(
+            TextRecognized(
+              '',
+              '',
+              '',
+              File(croppedImage.path),
+            ),
+          );
+          emit(CameraInitial());
           final croppedFile = File(croppedImage.path);
           final croppedInputImage = InputImage.fromFile(croppedFile);
           recognizedText = await textRecognizer.processImage(croppedInputImage);
           extractDataFromText(recognizedText);
           log('Nama: $name');
+          log('Alamat : $address');
         } else {
           final file = File(pictureFile.path);
           final inputImage = InputImage.fromFile(file);
@@ -44,6 +57,7 @@ class CameraCubit extends Cubit<CameraState> {
         emit(TextRecognized(
           nik,
           name,
+          address,
           File(croppedImage!.path),
         ));
       } else {
@@ -63,12 +77,17 @@ class CameraCubit extends Cubit<CameraState> {
         for (int j = 0; j < recognizedText.blocks[i].lines.length; j++) {
           var data = recognizedText.blocks[i].lines[j].text;
           log(data);
-          if (foundNIK) {
-            name = data.replaceAll(':', '');
+          if (foundNIK && foundName && isAddress(data)) {
+            log('Address: $data');
+            address = data.replaceAll(':', '').replaceAll('Alamat', '');
             break outerloop;
+          } else if (foundNIK && !foundName) {
+            name = data.replaceAll(':', '').replaceAll('Nama', '');
+            foundName = true;
           } else if (!foundNIK &&
               isNIK(recognizedText.blocks[i].lines[j].text)) {
             nik = data
+                .replaceAll('NIK', '')
                 .replaceAll(' ', '')
                 .replaceAll(':', '')
                 .replaceAll('?', '7')
@@ -90,8 +109,14 @@ class CameraCubit extends Cubit<CameraState> {
   }
 
   bool isNIK(String text) {
-    const nikPattern = r'\d{11,16}';
+    const nikPattern = r'\d{10,16}';
     final nikRegex = RegExp(nikPattern);
     return nikRegex.hasMatch(text);
+  }
+
+  bool isAddress(String text) {
+    const addressPattern = r'^JL';
+    final addressRegex = RegExp(addressPattern);
+    return addressRegex.hasMatch(text);
   }
 }

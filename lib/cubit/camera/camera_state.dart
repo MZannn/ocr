@@ -12,9 +12,11 @@ final class CameraInitial extends CameraState {}
 final class TextRecognized extends CameraState {
   final String identityNumber;
   final String name;
+  final String address;
   final File? image;
 
-  const TextRecognized(this.identityNumber, this.name, this.image);
+  const TextRecognized(
+      this.identityNumber, this.name, this.address, this.image);
 
   @override
   List<Object> get props => [identityNumber, name];

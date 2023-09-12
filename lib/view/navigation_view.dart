@@ -15,6 +15,8 @@ class NavigationView extends StatelessWidget {
             switch (state.selectedIndex) {
               case 0:
                 return const FormView();
+              // case 1:
+              //   return const HistoryView();
               case 1:
                 return const ProfileView();
               default:
@@ -62,6 +64,30 @@ class NavigationView extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     navCubit.changeScreen(1);
+                    //   },
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       Icon(
+                    //         state.selectedIndex == 1
+                    //             ? Icons.location_history_rounded
+                    //             : Icons.location_history_outlined,
+                    //         color: state.selectedIndex == 1
+                    //             ? Colors.blue
+                    //             : Colors.grey[300],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 8,
+                    //       ),
+                    //       const Text(
+                    //         "Riwayat",
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     InkWell(
                       onTap: () {
                         navCubit.changeScreen(1);

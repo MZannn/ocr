@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_visitor/cubit/auth/auth_cubit.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -42,21 +43,28 @@ class ProfileView extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/', (route) => false);
+                    BlocListener<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is LogoutSuccess) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (route) => false);
+                        }
                       },
-                      child: const Row(
-                        children: [
-                          Icon(Icons.person),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Logout"),
-                        ],
+                      child: InkWell(
+                        onTap: () {
+                          context.read<AuthCubit>().logout();
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(Icons.person),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Logout"),
+                          ],
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               )

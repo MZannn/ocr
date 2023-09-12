@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ocr_visitor/cubit/camera/camera_cubit.dart';
-import 'package:ocr_visitor/cubit/login/login_cubit.dart';
+import 'package:ocr_visitor/cubit/auth/auth_cubit.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -188,29 +188,27 @@ class _LoginViewState extends State<LoginView> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 30,
                       ),
-                      child: BlocListener<LoginCubit, LoginState>(
+                      child: BlocListener<AuthCubit, AuthState>(
                         listener: (context, state) {
-                          if (state is LoginLoading) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    content: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                });
-                          }
                           if (state is LoginFailed) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    content: Center(
-                                      child: Text("Email atau password salah"),
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("Login Failed"),
+                                  content:
+                                      const Text("Email atau password salah"),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("OK"),
                                     ),
-                                  );
-                                });
+                                  ],
+                                );
+                              },
+                            );
                           } else if (state is LoginSuccess) {
                             Navigator.pushReplacementNamed(
                                 context, '/navigation');
@@ -218,7 +216,7 @@ class _LoginViewState extends State<LoginView> {
                         },
                         child: ElevatedButton(
                           onPressed: () {
-                            context.read<LoginCubit>().login(
+                            context.read<AuthCubit>().login(
                                 emailController.text, passwordController.text);
                           },
                           style: ElevatedButton.styleFrom(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ocr_visitor/cubit/login/login_cubit.dart';
+import 'package:ocr_visitor/cubit/auth/auth_cubit.dart';
 import 'package:ocr_visitor/cubit/navigation/navigation_cubit.dart';
 import 'package:ocr_visitor/view/login_view.dart';
 import 'package:ocr_visitor/view/navigation_view.dart';
 
-import '../cubit/camera/camera_cubit.dart';
+import '../cubit/form/form_cubit.dart';
 
 class Routes {
   Route route(RouteSettings settings) {
@@ -12,7 +12,7 @@ class Routes {
       case '/':
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
-            create: (context) => LoginCubit(),
+            create: (context) => AuthCubit()..checkToken(),
             child: const LoginView(),
           ),
         );
@@ -23,17 +23,13 @@ class Routes {
               create: (context) => NavigationCubit()..changeScreen(0),
             ),
             BlocProvider(
-              create: (context) => CameraCubit(),
+              create: (context) => FormCubit()..getResidentData(),
+            ),
+            BlocProvider(
+              create: (context) => AuthCubit(),
             ),
           ], child: const NavigationView()),
         );
-      // case '/form':
-      //   return MaterialPageRoute(
-      //     builder: (context) => BlocProvider(
-      //       create: (context) => CameraCubit(),
-      //       child: const FormView(),
-      //     ),
-      //   );
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(),

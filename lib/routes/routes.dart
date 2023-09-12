@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/cubit/auth/auth_cubit.dart';
+import 'package:ocr_visitor/cubit/history/history_cubit.dart';
 import 'package:ocr_visitor/cubit/navigation/navigation_cubit.dart';
 import 'package:ocr_visitor/view/login_view.dart';
 import 'package:ocr_visitor/view/navigation_view.dart';
@@ -27,6 +28,9 @@ class Routes {
             ),
             BlocProvider(
               create: (context) => AuthCubit(),
+            ),
+            BlocProvider(
+              create: (context) => HistoryCubit()..getAllHistories(),
             ),
           ], child: const NavigationView()),
         );

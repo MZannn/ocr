@@ -8,3 +8,17 @@ sealed class HistoryState extends Equatable {
 }
 
 final class HistoryInitial extends HistoryState {}
+
+final class HistoryLoaded extends HistoryState {
+  final List<HistoryModel> histories;
+  const HistoryLoaded(this.histories);
+  @override
+  List<Object> get props => [histories];
+}
+
+final class HistoryError extends HistoryState {
+  final String message;
+  const HistoryError(this.message);
+  @override
+  List<Object> get props => [message];
+}

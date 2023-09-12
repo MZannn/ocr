@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/cubit/navigation/navigation_cubit.dart';
 import 'package:ocr_visitor/view/form_view.dart';
+import 'package:ocr_visitor/view/history_view.dart';
 import 'package:ocr_visitor/view/profile_view.dart';
 
 class NavigationView extends StatelessWidget {
@@ -15,9 +16,9 @@ class NavigationView extends StatelessWidget {
             switch (state.selectedIndex) {
               case 0:
                 return const FormView();
-              // case 1:
-              //   return const HistoryView();
               case 1:
+                return const HistoryView();
+              case 2:
                 return const ProfileView();
               default:
                 return const SizedBox();
@@ -64,30 +65,6 @@ class NavigationView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     navCubit.changeScreen(1);
-                    //   },
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       Icon(
-                    //         state.selectedIndex == 1
-                    //             ? Icons.location_history_rounded
-                    //             : Icons.location_history_outlined,
-                    //         color: state.selectedIndex == 1
-                    //             ? Colors.blue
-                    //             : Colors.grey[300],
-                    //       ),
-                    //       const SizedBox(
-                    //         height: 8,
-                    //       ),
-                    //       const Text(
-                    //         "Riwayat",
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     InkWell(
                       onTap: () {
                         navCubit.changeScreen(1);
@@ -97,9 +74,33 @@ class NavigationView extends StatelessWidget {
                         children: [
                           Icon(
                             state.selectedIndex == 1
+                                ? Icons.location_history_rounded
+                                : Icons.location_history_outlined,
+                            color: state.selectedIndex == 1
+                                ? Colors.blue
+                                : Colors.grey[300],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          const Text(
+                            "Riwayat",
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        navCubit.changeScreen(2);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            state.selectedIndex == 2
                                 ? Icons.person
                                 : Icons.person_outline_rounded,
-                            color: state.selectedIndex == 1
+                            color: state.selectedIndex == 2
                                 ? Colors.blue
                                 : Colors.grey[300],
                           ),

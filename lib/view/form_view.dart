@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/models/resident_model.dart';
 import '../cubit/form/form_cubit.dart';
@@ -16,7 +14,6 @@ class FormView extends StatelessWidget {
     TextEditingController addressPersonController = TextEditingController();
     TextEditingController phoneNumberPersonController = TextEditingController();
     String personName = '';
-    File? image;
     List<ResidentModel> residents = [];
     List<String> personNameList = [];
 
@@ -34,9 +31,6 @@ class FormView extends StatelessWidget {
             }
             if (state.address != null) {
               addressController.text = state.address!;
-            }
-            if (state.image != null) {
-              image = state.image!;
             }
           }
         },
@@ -89,7 +83,7 @@ class FormView extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       image: DecorationImage(
-                                        image: FileImage(image!),
+                                        image: FileImage(state.image!),
                                         fit: BoxFit.cover,
                                       ),
                                     ),

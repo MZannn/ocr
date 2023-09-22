@@ -75,7 +75,6 @@ class OCRApi {
             );
         return _returnResponse(response);
       } on DioException catch (e) {
-        print('eek ${e.response}');
         if (e.response!.statusCode! >= 500) {
           return _returnResponse(e.response!);
         } else {
@@ -90,7 +89,6 @@ class OCRApi {
             );
         return _returnResponse(response);
       } on DioException catch (e) {
-        print('eek ${e.response}');
         if (e.response!.statusCode! >= 500) {
           return _returnResponse(e.response!);
         } else {
@@ -149,7 +147,6 @@ class OCRApi {
 
         return _returnResponse(response);
       } on DioException catch (e) {
-        print('eek $e');
         if (e.response!.statusCode! >= 500) {
           return _returnResponse(e.response!);
         } else {
@@ -168,7 +165,6 @@ class OCRApi {
 
         return _returnResponse(response);
       } on DioException catch (e) {
-        print('eek $e');
         if (e.response!.statusCode! >= 500) {
           return _returnResponse(e.response!);
         } else {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ocr_visitor/env/class/env.dart';
@@ -27,6 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
           'email': email,
           'password': password,
         },
+        withToken: false,
       );
       if (response.statusCode == 200) {
         await preferences.setString(
@@ -36,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(LoginSuccess());
       }
     } catch (e) {
+      log(e.toString());
       emit(LoginFailed());
     }
   }

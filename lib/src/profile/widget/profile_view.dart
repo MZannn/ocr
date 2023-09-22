@@ -100,7 +100,7 @@ class ProfileView extends StatelessWidget {
                   builder: (context, state) {
                     if (state is ProfileLoaded) {
                       return Text(
-                        '${state.user.name!.toUpperCase()}',
+                        state.user.name!.toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                         ),

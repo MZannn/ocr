@@ -218,14 +218,35 @@ class FormView extends StatelessWidget {
                           popupProps: const PopupProps.menu(
                             showSearchBox: true,
                           ),
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            baseStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                            dropdownSearchDecoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 8,
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                            ),
+                          ),
                           selectedItem: personName,
                           dropdownBuilder: (context, selectedItem) {
-                            return Text(
-                              selectedItem
-                                  .toString()
-                                  .split('\n')[0]
-                                  .replaceAll('Nama : ', ''),
-                            );
+                            return selectedItem != ''
+                                ? Text(
+                                    selectedItem
+                                        .toString()
+                                        .split('\n')[0]
+                                        .replaceAll('Nama : ', ''),
+                                  )
+                                : const Text("Pilih Orang yang Ingin Dituju");
                           },
                           onChanged: (value) {
                             personName = value!

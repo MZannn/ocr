@@ -37,6 +37,8 @@ class AuthCubit extends Cubit<AuthState> {
           response.data['data']['access_token'],
         );
         emit(LoginSuccess());
+      } else {
+        emit(LoginFailed());
       }
     } catch (e) {
       log(e.toString());

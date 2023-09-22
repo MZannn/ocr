@@ -60,6 +60,7 @@ class FormCubit extends Cubit<FormVisitorState> {
           recognizedText = await textRecognizer.processImage(inputImage);
           extractDataFromText(recognizedText);
         }
+
         emit(ResidentsDataSucceedLoaded(
           residents,
           name,
@@ -68,7 +69,7 @@ class FormCubit extends Cubit<FormVisitorState> {
           File(croppedImage!.path),
         ));
       } else {
-        emit(FormInitial());
+        emit(ResidentsDataSucceedLoaded(residents, null, null, null, null));
       }
     } catch (e) {
       throw Exception(e);

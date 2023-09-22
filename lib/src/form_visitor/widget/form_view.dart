@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/env/extension/on_context.dart';
 import 'package:ocr_visitor/src/form_visitor/state/form_cubit.dart';
@@ -11,8 +12,8 @@ class FormView extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController addressController = TextEditingController();
     TextEditingController phoneNumberController = TextEditingController();
-    TextEditingController addressPersonController = TextEditingController();
     TextEditingController phoneNumberPersonController = TextEditingController();
+    TextEditingController addressPersonController = TextEditingController();
     String personName = '';
 
     return Scaffold(
@@ -210,95 +211,126 @@ class FormView extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButtonFormField(
-                            selectedItemBuilder: (context) {
-                              return state.residents.map((e) {
-                                return Text(e.name!);
-                              }).toList();
-                            },
-                            menuMaxHeight: 300,
-                            hint: const Text('Pilih Orang yang Ingin Dituju'),
-                            items: state.residents
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.name!,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey[300]!,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      margin: const EdgeInsets.only(
-                                        bottom: 8,
-                                      ),
-                                      width: double.infinity,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "Nama : ",
-                                              ),
-                                              Text(
-                                                e.name!,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "No Hp : ",
-                                              ),
-                                              Text(
-                                                e.phoneNumber!,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              personName = value!;
-                              addressPersonController.text = state.residents
-                                  .firstWhere(
-                                      (element) => element.name == personName)
-                                  .address!;
-                              phoneNumberPersonController.text = state.residents
-                                  .firstWhere(
-                                      (element) => element.name == personName)
-                                  .phoneNumber!;
-                            },
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            isDense: true,
-                            isExpanded: true,
-                            elevation: 0,
+                        DropdownSearch(
+                          items: state.residents.map((e) {
+                            return "Nama : ${e.name}\nNo Hp: ${e.phoneNumber}";
+                          }).toList(),
+                          popupProps: const PopupProps.menu(
+                            showSearchBox: true,
                           ),
+                          selectedItem: personName,
+                          dropdownBuilder: (context, selectedItem) {
+                            return Text(
+                              selectedItem
+                                  .toString()
+                                  .split('\n')[0]
+                                  .replaceAll('Nama : ', ''),
+                            );
+                          },
+                          onChanged: (value) {
+                            personName = value!
+                                .split('\n')[0]
+                                .toString()
+                                .replaceAll('Nama : ', '');
+                            addressPersonController.text = state.residents
+                                .firstWhere(
+                                    (element) => element.name == personName)
+                                .address!;
+                            phoneNumberPersonController.text = state.residents
+                                .firstWhere(
+                                    (element) => element.name == personName)
+                                .phoneNumber!;
+                          },
                         ),
+                        // DropdownButtonHideUnderline(
+                        //   child: DropdownButtonFormField(
+                        //     selectedItemBuilder: (context) {
+                        //       return state.residents.map((e) {
+                        //         return Text(e.name!);
+                        //       }).toList();
+                        //     },
+                        //     menuMaxHeight: 300,
+                        //     hint: const Text('Pilih Orang yang Ingin Dituju'),
+                        //     items: state.residents
+                        //         .map(
+                        //           (e) => DropdownMenuItem(
+                        //             value: e.name!,
+                        //             child: Container(
+                        //               decoration: BoxDecoration(
+                        //                 border: Border.all(
+                        //                   color: Colors.grey[300]!,
+                        //                 ),
+                        //                 borderRadius: BorderRadius.circular(8),
+                        //               ),
+                        //               padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 16,
+                        //               ),
+                        //               margin: const EdgeInsets.only(
+                        //                 bottom: 8,
+                        //               ),
+                        //               width: double.infinity,
+                        //               child: Column(
+                        //                 children: [
+                        //                   Row(
+                        //                     children: [
+                        //                       const Text(
+                        //                         "Nama : ",
+                        //                       ),
+                        //                       Text(
+                        //                         e.name!,
+                        //                         overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                   Row(
+                        //                     children: [
+                        //                       const Text(
+                        //                         "No Hp : ",
+                        //                       ),
+                        //                       Text(
+                        //                         e.phoneNumber!,
+                        //                         overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         )
+                        //         .toList(),
+                        //     onChanged: (value) {
+                        //       personName = value!;
+                        //       addressPersonController.text = state.residents
+                        //           .firstWhere(
+                        //               (element) => element.name == personName)
+                        //           .address!;
+                        //       phoneNumberPersonController.text = state.residents
+                        //           .firstWhere(
+                        //               (element) => element.name == personName)
+                        //           .phoneNumber!;
+                        //     },
+                        //     decoration: const InputDecoration(
+                        //       filled: true,
+                        //       fillColor: Colors.white,
+                        //       border: OutlineInputBorder(),
+                        //       contentPadding: EdgeInsets.symmetric(
+                        //         horizontal: 8,
+                        //       ),
+                        //       focusedBorder: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.all(
+                        //           Radius.circular(8),
+                        //         ),
+                        //         borderSide: BorderSide(
+                        //           color: Colors.blue,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     isDense: true,
+                        //     isExpanded: true,
+                        //     elevation: 0,
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 16,
                         ),
@@ -330,6 +362,22 @@ class FormView extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
+                        // DropdownSearch(
+                        //   items: state.residents
+                        //       .map((e) => e.phoneNumber)
+                        //       .toList(),
+                        //   selectedItem: phoneNumber,
+                        //   popupProps: const PopupProps.menu(
+                        //     showSearchBox: true,
+                        //   ),
+                        //   onChanged: (value) {
+                        //     phoneNumber = value!;
+                        //     personName = state.residents
+                        //         .firstWhere(
+                        //             (element) => element.phoneNumber == value)
+                        //         .name!;
+                        //   },
+                        // ),
                         TextFormField(
                           controller: phoneNumberPersonController,
                           decoration: InputDecoration(

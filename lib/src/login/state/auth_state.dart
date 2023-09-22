@@ -11,6 +11,8 @@ final class LoginInitial extends AuthState {}
 
 final class LoginSuccess extends AuthState {}
 
+final class LoginLoading extends AuthState {}
+
 final class LoginFailed extends AuthState {}
 
 final class LogoutSuccess extends AuthState {}

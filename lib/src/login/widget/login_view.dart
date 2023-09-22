@@ -190,7 +190,7 @@ class _LoginViewState extends State<LoginView> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 30,
                       ),
-                      child: BlocListener<AuthCubit, AuthState>(
+                      child: BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
                           if (state is LoginFailed) {
                             showCupertinoDialog(
@@ -217,27 +217,34 @@ class _LoginViewState extends State<LoginView> {
                             );
                           }
                         },
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context.read<AuthCubit>().login(
-                                emailController.text, passwordController.text);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              context.read<AuthCubit>().login(
+                                  emailController.text,
+                                  passwordController.text);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              minimumSize: const Size(double.infinity, 50),
                             ),
-                            minimumSize: const Size(double.infinity, 50),
-                          ),
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
+                            child: state is LoginLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                          );
+                        },
                       ),
                     ),
                   ],

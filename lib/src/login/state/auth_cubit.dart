@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void login(String email, String password) async {
     final SharedPreferences preferences = await prefs;
-    emit(LoginInitial());
+    emit(LoginLoading());
     try {
       var response = await OCRApi().post(
         path: 'login',

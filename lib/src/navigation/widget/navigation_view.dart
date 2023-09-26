@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/src/form_visitor/widget/form_view.dart';
+import 'package:ocr_visitor/src/history/state/history_cubit.dart';
 import 'package:ocr_visitor/src/history/widget/history_view.dart';
 import 'package:ocr_visitor/src/navigation/state/navigation_cubit.dart';
 import 'package:ocr_visitor/src/profile/widget/profile_view.dart';
@@ -68,6 +69,7 @@ class NavigationView extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         navCubit.changeScreen(1);
+                        context.read<HistoryCubit>().getVisitorActive();
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

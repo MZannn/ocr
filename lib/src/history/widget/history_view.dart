@@ -139,7 +139,7 @@ class HistoryView extends StatelessWidget {
                                                                             e.createdAt!),
                                                                       )}"),
                                                                       Text(
-                                                                          "Lama Kunjungan : ${time.inDays == 0 ? '' : time.inDays.toString().replaceAll('-', '')}${time.inDays != 0 ? ' hari ' : ''}${time.inHours == 0 || time.inHours <= -24 ? '' : time.inHours.toString().replaceAll('-', '')}${time.inHours <= -24 ? '' : ' jam'} ${time.inMinutes <= -60 ? '' : time.inMinutes.toString().replaceAll('-', '')} ${time.inMinutes <= -60 ? '' : 'menit'}"),
+                                                                          "Lama Kunjungan : ${time.inDays == 0 ? '' : time.inDays.toString().replaceAll('-', '')}${time.inDays != 0 ? ' hari ' : ''}${time.inHours == 0 || time.inHours <= -24 ? '' : time.inHours.toString().replaceAll('-', '')}${time.inHours <= -24 || time.inHours == 0 ? '' : ' jam'} ${time.inMinutes <= -60 ? '' : time.inMinutes.toString().replaceAll('-', '')} ${time.inMinutes <= -60 ? '' : 'menit'}"),
                                                                       const SizedBox(
                                                                         height:
                                                                             8,
@@ -262,7 +262,7 @@ class HistoryView extends StatelessWidget {
                                                               8,
                                                             ),
                                                           ),
-                                                          height: 100,
+                                                          height: 130,
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -278,8 +278,7 @@ class HistoryView extends StatelessWidget {
                                                                   "Nama : ${e.name}\nPemilik Rumah: ${e.resident!.name}\nDari Tanggal : ${DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(
                                                                     DateTime.parse(
                                                                         e.createdAt!),
-                                                                  )}\nLama Kunjungan : ${time.inDays == 0 ? '' : time.inDays.toString().replaceAll('-', '')}${time.inDays != 0 ? ' hari ' : ''}${time.inHours == 0 || time.inHours <= -24 ? '' : time.inHours.toString().replaceAll('-', '')}${time.inHours <= -24 ? '' : ' jam'} ${time.inMinutes <= -60 ? '' : time.inMinutes.toString().replaceAll('-', '')} ${time.inMinutes <= -60 ? '' : 'menit'}",
-                                                                  maxLines: 5,
+                                                                  )}\nLama Kunjungan : ${time.inDays == 0 ? '' : time.inDays.toString().replaceAll('-', '')}${time.inDays != 0 ? ' hari ' : ''}${time.inHours == 0 || time.inHours <= -24 ? '' : time.inHours.toString().replaceAll('-', '')}${time.inHours <= -24 || time.inHours == 0 ? '' : ' jam'} ${time.inMinutes <= -60 ? '' : time.inMinutes.toString().replaceAll('-', '')} ${time.inMinutes <= -60 ? '' : 'menit'}",
                                                                 ),
                                                               ),
                                                               InkWell(

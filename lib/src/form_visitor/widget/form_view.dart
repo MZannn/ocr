@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:ocr_visitor/env/extension/on_context.dart';
 import 'package:ocr_visitor/src/form_visitor/state/form_cubit.dart';
+import 'package:ocr_visitor/src/history/state/history_cubit.dart';
 
 class FormView extends StatelessWidget {
   const FormView({super.key});
@@ -185,6 +186,7 @@ class FormView extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: phoneNumberController,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'Nomor Telepon',
                             border: OutlineInputBorder(
@@ -429,7 +431,14 @@ class FormView extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            if (state.image != null) {
+                            if (state.image != null &&
+                                personName != '' &&
+                                identityNumberController.text != '' &&
+                                nameController.text != '' &&
+                                addressController.text != '' &&
+                                phoneNumberController.text != '' &&
+                                phoneNumberPersonController.text != '' &&
+                                addressPersonController.text != '') {
                               context.read<FormCubit>().sendVisitorData(
                                     personName: personName,
                                     nik: identityNumberController.text,
@@ -442,8 +451,11 @@ class FormView extends StatelessWidget {
                                             element.name == personName)
                                         .id!,
                                   );
+                              context.read<HistoryCubit>().getVisitorActive();
                             } else {
-                              context.alert(label: 'Foto belum dipilih');
+                              context.alert(
+                                  label:
+                                      'Masih ada data yang kosong atau Gambar belum dipilih');
                             }
                           },
                           style: ElevatedButton.styleFrom(

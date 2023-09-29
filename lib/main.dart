@@ -7,7 +7,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'OCR Visitor',
+      debugShowCheckedModeBanner: false,
+      title: 'Smart Cluster',
       theme: ThemeData(
         useMaterial3: true,
       ),

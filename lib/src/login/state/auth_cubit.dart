@@ -16,6 +16,8 @@ class AuthCubit extends Cubit<AuthState> {
     var token = preferences.getString('token');
     if (token != null) {
       emit(LoginSuccess());
+    } else {
+      emit(LoginFailed());
     }
   }
 

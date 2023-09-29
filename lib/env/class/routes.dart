@@ -7,11 +7,21 @@ class Routes {
   });
   final String path;
   final Widget page;
-
+  static Routes splash = Routes(
+    path: 'splash',
+    page: MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthCubit()..checkToken(),
+        ),
+      ],
+      child: const SplashView(),
+    ),
+  );
   static Routes login = Routes(
     path: 'login',
     page: BlocProvider(
-      create: (context) => AuthCubit()..checkToken(),
+      create: (context) => AuthCubit(),
       child: const LoginView(),
     ),
   );
